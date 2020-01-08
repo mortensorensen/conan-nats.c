@@ -1,6 +1,5 @@
-#include <iostream>
+#include <nats/nats.h>
 
 int main() {
-    std::cout << "hello\n";
     return 0;
 }
