@@ -1,0 +1,15 @@
+image: conanio/gcc7
+
+variables:
+  PACKAGE: "nats.c"
+  VERSION: "${CI_COMMIT_TAG}"
+  CHANNEL: "${CI_PROJECT_NAMESPACE}+${CI_PROJECT_NAME}/stable"
+
+create_package:
+  stage: deploy
+  script:
+    - conan remote add gitlab https://gitlab.com/api/v4/packages/conan
+    - conan create . ${CHANNEL}
+    - CONAN_LOGIN_USERNAME=ci_user CONAN_PASSWORD=${CI_JOB_TOKEN} conan upload ${PACKAGE}/${VERSION}@${CHANNEL} --all --remote=gitlab
+  only:
+    - tags
